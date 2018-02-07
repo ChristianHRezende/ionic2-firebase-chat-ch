@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Loading, LoadingController, AlertController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import * as firebase from 'firebase/app';
-
+import 'rxjs/add/operator/first';
 
 @Component({
   selector: 'page-signup',
@@ -34,35 +34,45 @@ export class SignupPage {
     })
   }
 
-
-
   onSubmit(): void {
 
     let loading: Loading = this.showLoading();
     let formUser = this.signupForm.value;
+    let username: string = formUser.username;
 
-    //Create user auth
-    this.authService.createAuthUser({ email: formUser.email, password: formUser.password })
-      .then((firebaseUser: firebase.User) => {
-        delete formUser.password;
-        formUser.uId = firebaseUser.uid;
+    this.userService.userExists(username)
+      .first()
+      .subscribe((userExiste: boolean) => {
+        if (!userExiste) {
+          //Create user auth
+          this.authService.createAuthUser({ email: formUser.email, password: formUser.password })
+            .then((firebaseUser: firebase.User) => {
+              delete formUser.password;
+              formUser.uId = firebaseUser.uid;
 
-        //Save on db
-        this.userService.create(this.signupForm.value)
-          .then(() => {
-            console.log("Usuario cadastrado");
-            loading.dismiss();
-          }).catch((error: Error) => {
-            console.log(error);
-            loading.dismiss();
-            this.showAlert(error.message);
-          });
+              //Save on db
+              this.userService.create(this.signupForm.value)
+                .then(() => {
+                  console.log("Usuario cadastrado");
+                  loading.dismiss();
+                }).catch((error: any) => {
+                  console.log(error);
+                  loading.dismiss();
+                  this.showAlert(error);
+                });
 
-      }).catch((error: Error) => {
-        console.log(error);
-        loading.dismiss();
-        this.showAlert(error.message);
-      });
+            }).catch((error: any) => {
+              console.log(error);
+              loading.dismiss();
+              this.showAlert(error);
+            });
+
+        } else {
+          this.showAlert('Username já utilizado');
+          loading.dismiss();
+
+        }
+      })
 
   }
 

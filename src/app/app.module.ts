@@ -1,3 +1,4 @@
+import { SigninPage } from './../pages/signin/signin';
 import { UserService } from './../providers/user/user.provider';
 import { SignupPage } from './../pages/signup/signup';
 import { BrowserModule } from '@angular/platform-browser';
@@ -27,21 +28,23 @@ const firebaseAppConfig: FirebaseAppConfig = {
   declarations: [
     MyApp,
     HomePage,
-    SignupPage
+    SignupPage,
+    SigninPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(firebaseAppConfig), 
+    AngularFireModule.initializeApp(firebaseAppConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule
-    
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    SignupPage
+    SignupPage,
+    SigninPage
   ],
   providers: [
     StatusBar,
