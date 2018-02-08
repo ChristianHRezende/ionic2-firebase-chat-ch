@@ -1,5 +1,8 @@
+import { UserService } from './../providers/user/user.service';
+import { AuthService } from './../providers/auth/auth.service';
+import { Observable } from 'rxjs/Rx';
+import { environment } from './../enviroments/enviroments';
 import { SigninPage } from './../pages/signin/signin';
-import { UserService } from './../providers/user/user.provider';
 import { SignupPage } from './../pages/signup/signup';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -7,6 +10,8 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
+import { CapitalizePipe } from './../pipes/capitalize/capitalize.pipe';
+import { CustomLoggedHeaderComponent } from './../components/custom-logged-header/custom-logged-header.component';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { FirebaseAppConfig, AngularFireModule } from 'angularfire2'
@@ -14,27 +19,22 @@ import { FirebaseAppConfig, AngularFireModule } from 'angularfire2'
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
-import { AuthService } from '../providers/auth/auth';
 
-const firebaseAppConfig: FirebaseAppConfig = {
-  apiKey: "AIzaSyD_MEZNW1cspifCypiEZ3u6NUb_J4IhsEM",
-  authDomain: "ionic2-firebase-chat-f24ae.firebaseapp.com",
-  databaseURL: "https://ionic2-firebase-chat-f24ae.firebaseio.com",
-  storageBucket: "ionic2-firebase-chat-f24ae.appspot.com",
-  messagingSenderId: "603758265420"
-}
+//Configs on enviroments
 
 @NgModule({
   declarations: [
-    MyApp,
+    CapitalizePipe,
+    CustomLoggedHeaderComponent,
     HomePage,
+    MyApp,
     SignupPage,
     SigninPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(firebaseAppConfig),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule
 
@@ -55,4 +55,5 @@ const firebaseAppConfig: FirebaseAppConfig = {
     AngularFireAuth
   ]
 })
-export class AppModule { }
+export class AppModule {
+}

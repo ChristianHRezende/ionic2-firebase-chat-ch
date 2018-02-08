@@ -1,11 +1,11 @@
+import { AuthService } from './../../providers/auth/auth.service';
+import { UserService } from './../../providers/user/user.service';
 import { User } from './../../models/user.model';
-import { AuthService } from './../../providers/auth/auth';
-import { UserService } from './../../providers/user/user.provider';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Loading, LoadingController, AlertController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import * as firebase from 'firebase/app';
-import 'rxjs/add/operator/first';
+import { HomePage } from "../home/home";
 
 @Component({
   selector: 'page-signup',
@@ -54,6 +54,7 @@ export class SignupPage {
               this.userService.create(this.signupForm.value)
                 .then(() => {
                   console.log("Usuario cadastrado");
+                  this.navCtrl.setRoot(HomePage);
                   loading.dismiss();
                 }).catch((error: any) => {
                   console.log(error);
