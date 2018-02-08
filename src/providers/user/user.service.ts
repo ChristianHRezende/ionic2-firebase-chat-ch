@@ -16,9 +16,9 @@ export class UserService extends BaseService {
     this.users = this.db.list<User>('users').valueChanges();
   }
 
-  create(user: User): Promise<void> {
+  create(user: User, uuid:string): Promise<void> {
 
-    return this.db.object(`/users/${user.uId}`)
+    return this.db.object(`/users/${uuid}`)
       .set(user)
       .catch(this.handlePromiseError);
   }

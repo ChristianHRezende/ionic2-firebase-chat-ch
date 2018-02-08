@@ -1,7 +1,7 @@
-export class User {
+export class Message {
     constructor(
         public name: string,
         public username: string,
         public email: string,
-        public photo: string) {}
+        public uId: string) {}
 }
